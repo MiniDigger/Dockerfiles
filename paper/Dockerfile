@@ -15,7 +15,4 @@ RUN cd /srv &&\
 	rm -rf cache &&\
 	chmod 444 /srv/paper.jar
 
-ADD start.sh /usr/local/bin/paper
-RUN chmod +x /usr/local/bin/paper
-
-CMD ["paper"]
+CMD ["java $JAVA_ARGS -jar /srv/paper.jar $PAPER_ARGS $SPIGOT_ARGS"]
