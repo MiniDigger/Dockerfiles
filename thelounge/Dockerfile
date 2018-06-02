@@ -16,9 +16,9 @@ WORKDIR /var/opt/thelounge-source/
 COPY docker-entrypoint.sh /usr/local/bin/docker-entrypoint.sh
 
 # Install text editors and git
-RUN apk update && \
-    apk upgrade && \
-    apk add --no-cache bash nano git openssh && \
+RUN apt-get update && \
+    apt-get install -y vim nano git && \
+    apt-get clean && \
     rm -rf /var/lib/apt/lists/*
 
 # install webpack
@@ -29,5 +29,4 @@ RUN npm install -g webpack webpack-dev-server yarn && \
 RUN git clone https://github.com/thelounge/thelounge.git . && \
     yarn install && \
     NODE_ENV=production yarn build && \
-    npm cache clean --force && \
-    yarn cache clean
+    rm -rf node_modules
