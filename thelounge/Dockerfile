@@ -1,4 +1,4 @@
-FROM node:8-alpine
+FROM node:8
 
 ENV NODE_ENV production
 
@@ -9,20 +9,18 @@ VOLUME "${THELOUNGE_HOME}"
 ENV PORT 9000
 EXPOSE ${PORT}
 
-ENTRYPOINT ["docker-entrypoint.sh"]
-CMD ["thelounge", "start"]
+CMD ["yarn", "start"]
 WORKDIR /var/opt/thelounge-source/
 
-COPY docker-entrypoint.sh /usr/local/bin/docker-entrypoint.sh
-
 # Install text editors and git
-RUN apk update && \
-    apk upgrade && \
-    apk add --no-cache bash nano git openssh && \
+RUN apt-get update && \
+    apt-get -y upgrade && \
+    apt-get -y install bash nano git && \
+    apt-get clean && \ 
     rm -rf /var/lib/apt/lists/*
 
 # install webpack
-RUN npm install -g webpack webpack-dev-server yarn && \
+RUN npm install -g webpack yarn && \
     npm cache clean --force
 
 # Install thelounge.
