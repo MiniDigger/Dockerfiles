@@ -16,9 +16,9 @@ WORKDIR /var/opt/thelounge-source/
 COPY docker-entrypoint.sh /usr/local/bin/docker-entrypoint.sh
 
 # Install text editors and git
-RUN apt-get update && \
-    apt-get install -y vim nano git && \
-    apt-get clean && \
+RUN apk update && \
+    apk upgrade && \
+    apk add --no-cache bash nano git openssh && \
     rm -rf /var/lib/apt/lists/*
 
 
