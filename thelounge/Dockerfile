@@ -22,8 +22,8 @@ RUN apt-get update && \
     rm -rf /var/lib/apt/lists/*
 
 # install webpack
-RUN npm install -g webpack webpack-dev-server yarn && \
-    npm cache clean --force
+RUN yarn add --dev webpack webpack-dev-server && \
+    yarn cache clean
 
 # Install thelounge.
 RUN git clone https://github.com/thelounge/thelounge.git . && \
