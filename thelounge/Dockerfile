@@ -1,29 +1,24 @@
-FROM node:8
+FROM node:9
 
-ENV NODE_ENV production
+ENV NODE_ENV development
 
 ENV THELOUNGE_HOME "/var/opt/thelounge"
 VOLUME "${THELOUNGE_HOME}"
 
-ENV THELOUNGE_SOURCE "/var/opt/thelounge-source/"
-WORKDIR "${THELOUNGE_SOURCE}"
-
-# Expose HTTP.
 ENV PORT 9000
 EXPOSE ${PORT}
 
-CMD ["yarn", "start"]
+ENTRYPOINT ["yarn", "start"]
+WORKDIR /var/opt/thelounge-source/
 
 # Install text editors and git
 RUN apt-get update && \
-    apt-get -y upgrade && \
-    apt-get -y install bash nano git && \
-    apt-get clean && \ 
+    apt-get install -y vim nano git && \
+    apt-get clean && \
     rm -rf /var/lib/apt/lists/*
 
-# Install thelounge.
-RUN git clone https://github.com/thelounge/thelounge.git ${THELOUNGE_SOURCE} && \
-    cd ${THELOUNGE_SOURCE} && \
-    yarn add --dev webpack webpack-cli webpack-dev-server copy-webpack-plugin && \
+# Install thelounge and my theme
+RUN git clone https://github.com/thelounge/thelounge.git . && \
     yarn install && \
-    NODE_ENV=production yarn build
+    yarn build && \
+    node index install thelounge-theme-mininapse
